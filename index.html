@@ -3,6 +3,7 @@
   <head> 
 <meta charset="UTF-8">
 <title>Title</title>
+<script crs="https://code.jquery.com/jquery-latest.js"></script>
 </head>
   <script>
     function startRecognizer()
@@ -12,11 +13,15 @@
           
           rec.onresult = function(e)
           {
-              va rez= e.results(e.resultIndex);
-              var str= rez[0].tranacript;
-              console.long ('результат розпізнаття: '+str);
-              
+              var rez= e.results[e.resultIndex];
+              var str= rez[0].transcript;
+              //console.log ('рез' +str);
+          
+              if((str.index('перв')>=0) || (str.index0f('1')>=0)) div_show(1)
+              if((str.index('втор')>=0) || (str.index0f('2')>=0)) div_show(2)
+              if((str.index('трет')>=0) || (str.index0f('3')>=0)) div_show(3)
       }
+          
           rec.onend = function()
           {
               startRecognizer();
@@ -24,8 +29,35 @@
           rec.start();
       }
       startRecognizer();
+      function div_show(num)
+      {
+          $("#div1").css('display','none');
+          $("#div2").css('display','none');
+          $("#div3").css('display','none');
+      
+      switch (num)
+          {
+                  case 1: 
+                  $("#div1").css('display','block');
+                break;
+                  case 2: 
+                  $("#div2").css('display','block');
+                break;
+                  case 3: 
+                  $("#div3").css('display','block');
+                break;
+          }
+      }
     </script>
     <body>
-        
+        <div id="div1">
+            Bloc 1
+        </div>
+        <div id="div1">
+            Bloc 2
+        </div>
+        <div id="div1">
+            Bloc 3
+        </div>
     </body>
 </html>
