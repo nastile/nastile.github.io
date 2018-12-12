@@ -1,0 +1,55 @@
+* {
+    margin: 0;
+    padding: 0;
+
+}
+
+body {
+    color: white;
+    background-color: black;
+    background-image: url(../photos/fon.jpg);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: 100%;
+    background-position: 0px 64px;
+}
+
+header {
+    min-height: 60px;
+    background-color: black;
+    position: fixed;
+    width: 100%;
+}
+
+.logo {
+    float: left;
+}
+
+aside {
+    position: fixed;
+    float: left;
+    clear: both;
+    width: 24%;
+    display: block;
+    overflow: hidden;
+    top: 64px;
+}
+
+article {
+    float: right;
+    width: 74%;
+    overflow: hidden;
+    margin-top: 65px;
+}
+
+section {}
+
+footer {
+    padding: 25px;
+    clear: both;
+    text-align: center;
+}
+
+footer small a {
+    color: #eff;
+}
