@@ -1,23 +1,31 @@
 ﻿<!DOCTYPE HTML>
-<html>
-  <head> </head>
-  <body id="main">
-
-произнесите "красный"
-<input id="speech" type="text" speech="speech" x-webkit-speech="x-webkit-speech" onspeechchange="processspeech();" onwebkitspeechchange="processspeech();" />
-
-
-   <script type="text/javascript">
-    function processspeech()
-    {
-      var speechInput=document.getElementById("speech").value;
-      switch ( speechInput){
-        case "красный":
-          alert("вы выбрали крсный цвет");	
-        break;      
+<html lang="en">
+  <head> 
+<meta charset="UTF-8">
+<title>Title</title>
+</head>
+  <script>
+    function startRecognizer()
+      {
+          var rec= new webkitSpeechRecognition();
+          rec.lang='ru';
+          
+          rec.onresult = function(e)
+          {
+              va rez= e.results(e.resultIndex);
+              var str= rez[0].tranacript;
+              console.long ('результат розпізнаття: '+str);
+              
       }
-    }
-   </script>
-    
-  </body>
+          rec.onend = function()
+          {
+              startRecognizer();
+          }
+          rec.start();
+      }
+      startRecognizer();
+    </script>
+    <body>
+        
+    </body>
 </html>
