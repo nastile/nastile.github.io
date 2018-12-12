@@ -15,11 +15,11 @@
           {
               var rez= e.results[e.resultIndex];
               var str= rez[0].transcript;
-              //console.log ('рез' +str);
+              console.log ('рез' +str);
           
-              if((str.index0f('перв')>=0) || (str.index0f('1')>=0)) div_show(1)
-              if((str.index0f('втор')>=0) || (str.index0f('2')>=0)) div_show(2)
-              if((str.index0f('трет')>=0) || (str.index0f('3')>=0)) div_show(3)
+              if ((str.indexOf('перв')>=0) || (str.indexOf('1')>=0)) div_show(1)
+              if ((str.indexOf('втор')>=0) || (str.indexOf('2')>=0)) div_show(2)
+              if ((str.indexOf('трет')>=0) || (str.indexOf('3')>=0)) div_show(3)
       }
           
           rec.onend = function()
@@ -29,6 +29,7 @@
           rec.start();
       }
       startRecognizer();
+      
       function div_show(num)
       {
           $("#div1").css('display','none');
@@ -53,10 +54,10 @@
         <div id="div1" style="display: none;">
             Bloc 1
         </div>
-        <div id="div1" style="display: none;">
+        <div id="div2" style="display: none;">
             Bloc 2
         </div>
-        <div id="div1" style="display: none;">
+        <div id="div3" style="display: none;">
             Bloc 3
         </div>
     </body>
