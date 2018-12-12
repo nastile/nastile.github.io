@@ -1,154 +1,225 @@
-﻿<!DOCTYPE html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <title>#naStile</title>
-  <meta charset=" utf-8">
-  <link rel="shortcut icon" href="images/icon.ico" type="image/x-icon">
-  <link rel="stylesheet" href="css/reset.css" type="text/css" media="all">
-  <link rel="stylesheet" href="css/layout.css" type="text/css" media="all">
-  <link rel="stylesheet" href="css/style.css" type="text/css" media="all">
-  <script type="text/javascript" src="js/jquery-1.6.js" ></script>
-  <script type="text/javascript" src="js/cufon-replace.js"></script>
-  		<script type="text/javascript" src="js/NewsGoth_BT_400.font.js"></script>
-  		<script type="text/javascript" src="js/NewsGoth_BT_700.font.js"></script>
-  <script type="text/javascript" src="js/jcarousellite.js"></script>
-  <script type="text/javascript" src="js/jquery.easing.1.3.js"></script>
-  <script type="text/javascript" src="js/jquery.mousewheel.js"></script>
-  <script type="text/javascript" src="js/atooltip.jquery.js"></script>
+  <title>annyang! Easily add speech recognition to your site</title>
+  <meta name="description" content="annyang is a JavaScript SpeechRecognition library that makes adding voice commands to your site super-easy. Let your users control your site with their voice." />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta property="og:image" content="https://www.talater.com/annyang/images/icon_speech.png"/>
+  <meta property="og:title" content="annyang! Easily add speech recognition to your site"/>
+  <meta property="og:url" content="https://www.talater.com/annyang/"/>
+  <meta property="og:site_name" content="annyang"/>
+  <meta property="fb:admins" content="568390229" />
+  <script src="annyang.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+  <script>
+  "use strict";
+
+  // first we make sure annyang started succesfully
+  if (annyang) {
+
+    // define the functions our commands will run.
+    var hello = function() {
+      $("#hello").slideDown("slow");
+      scrollTo("#section_hello");
+    };
+
+    var showFlickr = function(tag) {
+      $('#flickrGallery').show();
+      $('#flickrLoader p').text('Searching for '+tag).fadeIn('fast');
+      var url = '//api.flickr.com/services/rest/?method=flickr.photos.search&api_key=a828a6571bb4f0ff8890f7a386d61975&sort=interestingness-desc&per_page=9&format=json&callback=jsonFlickrApi&tags='+tag;
+      $.ajax({
+        type: 'GET',
+        url: url,
+        async: false,
+        jsonpCallback: 'jsonFlickrApi',
+        contentType: "application/json",
+        dataType: 'jsonp'
+      });
+      scrollTo("#section_image_search");
+    };
+
+    var jsonFlickrApi = function(results) {
+      $('#flickrLoader p').fadeOut('slow');
+      var photos = results.photos.photo;
+      $.each(photos, function(index, photo) {
+        $(document.createElement("img"))
+          .attr({ src: '//farm'+photo.farm+'.staticflickr.com/'+photo.server+'/'+photo.id+'_'+photo.secret+'_s.jpg' })
+          .addClass("flickrGallery")
+          .appendTo(flickrGallery);
+      });
+    };
+
+    var showTPS = function(type) {
+      $('#tpsreport').show().animate({
+        bottom: '-100px'
+      }).delay('2000').animate({
+        bottom: '-500px'
+      });
+    };
+
+    var getStarted = function() {
+      window.location.href = 'https://github.com/TalAter/annyang';
+    }
+
+    // define our commands.
+    // * The key is the phrase you want your users to say.
+    // * The value is the action to do.
+    //   You can pass a function, a function name (as a string), or write your function as part of the commands object.
+    var commands = {
+      'hello (there)':        hello,
+      'show me *search':      showFlickr,
+      'show :type report':    showTPS,
+      'let\'s get started':   getStarted,
+    };
+
+    // OPTIONAL: activate debug mode for detailed logging in the console
+    annyang.debug();
+
+    // Add voice commands to respond to
+    annyang.addCommands(commands);
+
+    // OPTIONAL: Set a language for speech recognition (defaults to English)
+    // For a full list of language codes, see the documentation:
+    // https://github.com/TalAter/annyang/blob/master/docs/FAQ.md#what-languages-are-supported
+    annyang.setLanguage('en');
+
+    // Start listening. You can call this here, or attach this call to an event, button, etc.
+    annyang.start();
+  } else {
+    $(document).ready(function() {
+      $('#unsupported').fadeIn('fast');
+    });
+  }
+
+  var scrollTo = function(identifier, speed) {
+    $('html, body').animate({
+        scrollTop: $(identifier).offset().top
+    }, speed || 1000);
+  }
+  </script>
+  <link rel="stylesheet" href="css/main.min.css" />
 </head>
+<body>
+  <section id="section_header">
+    <h1><em>annyang!</em> SpeechRecognition that just works</h1>
+    <h2>annyang is a tiny javascript library that lets your visitors control your site with voice commands.</h2>
+    <h2>annyang supports multiple languages, has no dependencies, weighs just 2kb and is free to use.</h2>
+    <img src="images/icon_user.png" alt="User icon">
+    <img src="images/icon_speech.png" alt="Speech baloon icon">
+    <img src="images/icon_js.png" alt="JavaScript icon">
+  </section>
+  <section id="section_hello">
+    <p><em>Go ahead, try it&hellip;</em></p>
+    <p class="voice_instructions">Say "Hello!"</p>
+    <p id="hello" class="hidden">Annyang!</p>
+  </section>
+  <section id="section_image_search">
+    <p><em>Let's try something more interesting&hellip;</em></p>
+    <p class="voice_instructions">Say "Show me cute kittens!"</p>
+    <p class="voice_instructions">Say "Show me Arches National Park!"</p>
+    <p class="voice_instructions">Now go wild. Say "Show me&hellip;" and make your demands!</p>
+    <div id="flickrLoader"><p></p></div>
+    <div id="flickrGallery" class="hidden"></div>
+  </section>
+  <section id="section_biz_use">
+    <p><em>That's cool, but in the real world it's not all kittens and hello world.</em></p>
+    <p class="voice_instructions">No problem, say "Show TPS report"</p>
+    <img src="images/tpscover.jpg" alt="" id="tpsreport" class="hidden">
+  </section>
+  <section id="section_code_sample_1">
+    <p><em>How did you do that?</em></p>
+    <p>Simple. Here is all the code needed to achieve that:</p>
+    <pre><code>&lt;script src="<a href="//cdnjs.cloudflare.com/ajax/libs/annyang/2.6.1/annyang.min.js">//cdnjs.cloudflare.com/ajax/libs/annyang/2.6.1/annyang.min.js</a>"&gt;&lt;/script&gt;
+&lt;script&gt;
+if (annyang) {
+  // Let's define our first command. First the text we expect, and then the function it should call
+  var commands = {
+    'show tps report': function() {
+      $('#tpsreport').animate({bottom: '-100px'});
+    }
+  };
 
-<body id="page1">
-	<div class="bg1">
-		<div class="main">
-			<header>
-				<nav>
-					<ul id="menu">
-						<li class="active"><a href="index.html">#naStile</a></li>
-						<li><a href="Parties.html">Вечірки</a></li>
-						<li><a href="Gallery.html">Фото</a></li>
-						<li><a href="Residents.html">Команда</a></li>
-						<li><a href="News.html">Новини</a></li>
-						<li><a href="Contacts.html">Контакти</a></li>
+  // Add our commands to annyang
+  annyang.addCommands(commands);
 
-					</ul>
-				</nav>
-				<h1><a href="index.html" id="logo">#naStile</a></h1>
-			</header>
-			
-			<div class="box">
-			
-			<article id="content">
-				<div class="wrapper pad_bot1">
-					<section class="col1">
-						<p class="color1"><h7>#naStile – це серія вечірок з різними тематиками.<br>
-						 Це місце, де твоє тіло та душа зливаються воєдино.
-						 <br> #naStile – це танцювально-музикальна терапія.</h7></p>
-						 <figure class="pad_bot1"><img src="images/s5_logo.png"></figure>
-					</section>
-					<section class="col1 pad_left1">
-						<h2>Останні події</h2>
-						<div id="gallery1">
-							<ul>
-								<li>
-									<span class="dropcap_1">23<span>листопада</span></span>
-									<p><span class="color1">Вечір сучасної української пісні</span><br>
-											Творчий проект #naStile не відмовляється від тематичних дискотек... <br>
-											<a href="Ukrainiansong.html" class="link1">Детальніше</a></p>
-								</li>
-								<li>
-									<span class="dropcap_1">16<span>листопада</span></span>
-									<p><span class="color1">Students' party</span><br>
-											Творчий проект #naStile запрошує вас на Students' party <br>
-											<a href="PartiesStudentParty.html" class="link1">Детальніше</a></p>
-								</li>
-								<li>
-									<span class="dropcap_1">25<span>жовтня</span></span>
-									<p><span class="color1">Halloween party</span><br>
-											Ну що, вампіри і привиди?!А ви готуєте свій найстрашніший образ ?! <br>
-											<a href="PartiesHalloweenParty.html" class="link1">Детальніше</a></p>
-								</li>
-								<li>
-									<span class="dropcap_1">28<span>вересня</span></span>
-									<p><span class="color1">Mult Party</span><br>
-											#naStile снова с вами💥💥💥<br>
-											И это - МУЛЬТ PARTY💣 <br>
-											<a href="PartiesMultParty.html" class="link1">Детальніше</a></p>
-								</li>
-								<li>
-									<span class="dropcap_1">7<span>вересня</span></span>
-									<p><span class="color1">Open Air</span><br>
-											Ну что же... это было затишье перед бурей!<br>
-											Ждали?!😈<br>
-											<a href="PartiesOpenAir.html" class="link1">Детальніше</a></p>
-								</li>
-							</ul>
-						</div>
-						<a href="#" class="next"></a>
-						<a href="#" class="prev"></a>
-					</section>
-				</div>
-				<div class="wrapper">
-					<h2>Наступна вечірка</h2>
-					<div class="wrapper">
-						<figure class="left marg_right1"><a href="#"><img src="images/banner1.jpg" alt=""></a></figure>
-						<h3>🎄NEW YEAR PARTY🎄</h3>
-						<p class="color1">Т⚠A T T E N T I O N⚠ творческий проект #naStile представляет⛄<br>
-						🎄NEW YEAR PARTY🎄<br>
-						Мы просто обязаны проводить 2017 год в нашей старой компании - с вами😘 Это крайняя вечеруха года и одна из самых особых😃<br>
-						19 декабря (вторник) в 20.30 в КОЦ "Юность"🔥<br>
-						Вход 15 грн👌</p>
-						<ul class="list1 pad_bot1">
-							<li><a href="PartiesNEWYEAR.html">Детальніше</a></li>
-						</ul>
-					</div>
-				</div>
-			</article>
-			<footer>
-				<div class="line1">
-					<div class="line2 wrapper">
-						<div class="icons">
-							<h4 align="center">Зв'яжіться з нами</h4>
-							<ul id="icons">
-								<li><a href="https://vk.com/tancinasheimolodosti" class="normaltip" title="Вконтакте"><img src="images/icon1.png" alt=""></a></li>
-								<li><a href="https://www.instagram.com/nastile.party/" class="normaltip" title="instagram"><img src="images/icon2.png" alt=""></a></li>
-							</ul>
-						</div>
-						<div class="info">
-							<h4 align="center">Проект за підтримки</h4>
-							<ul>
-								<li align="center"><a href="https://vk.com/nizhynuniversity">НДУ |StudentsCommunity|</a></li>
-								<li align="center"><a href="https://vk.com/yunistndu">Культурно-освiтнiй центр "Юність"</a></li>
-								<li align="center"><a href="https://vk.com/profkomndu">Профком студентів НДУ ім.М.Гоголя</a></li>
-								<li align="center"><a href="http://www.ndu.edu.ua/index.php/ua/">НДУ імені Миколи Гоголя</a></li>
-							</ul>
-						</div>
-						<div class="phone">
-							<h4 align="center">Замовлення квитків</h4>
-							<p align="center"><span>093-909-67-64-Аліна</span></p>
-							<p align="center"><span>093-814-05-11-Серг ій</span></p>
-						</div>
-					</div>
-					
-				</div>
-			</footer>
-			</div>
-		</div>
-	</div>
-<script>
-$(document).ready(function(){
-	//gallery
-	$("#gallery1").jCarouselLite({
-			btnNext: ".next",
-		 	btnPrev: ".prev",
-       		mouseWheel: true,
-			vertical: true,
-			circular: true,
-			visible: 2,
-			speed: 600,
-			easing: 'easeOutCirc'
-	});
-	Cufon.now();
-})
-</script>
+  // Start listening. You can call this here, or attach this call to an event, button, etc.
+  annyang.start();
+}
+&lt;/script&gt;</code></pre>
+  </section>
+  <section id="section_named_and_splats">
+    <p><em>What about more complicated commands?</em></p>
+    <p>annyang understands commands with <strong>named variables</strong>, <strong>splats</strong>, and <strong>optional words</strong>.</p>
+    <p>Use <strong>named variables</strong> for one word arguments in your command.</p>
+    <p>Use <strong>splats</strong> to capture multi-word text at the end of your command (greedy).</p>
+    <p>Use <strong>optional words or phrases</strong> to define a part of the command as optional.</p>
+    <pre><code>&lt;script&gt;
+var commands = {
+  // annyang will capture anything after a splat (*) and pass it to the function.
+  // e.g. saying "Show me Batman and Robin" is the same as calling showFlickr('Batman and Robin');
+  'show me *tag': showFlickr,
+
+  // A named variable is a one word variable, that can fit anywhere in your command.
+  // e.g. saying "calculate October stats" will call calculateStats('October');
+  'calculate :month stats': calculateStats,
+
+  // By defining a part of the following command as optional, annyang will respond to both:
+  // "say hello to my little friend" as well as "say hello friend"
+  'say hello (to my little) friend': greeting
+};
+
+var showFlickr = function(tag) {
+  var url = 'http://api.flickr.com/services/rest/?tags='+tag;
+  $.getJSON(url);
+}
+
+var calculateStats = function(month) {
+  $('#stats').text('Statistics for '+month);
+}
+
+var greeting = function() {
+  $('#greeting').text('Hello!');
+}
+
+&lt;/script&gt;</code></pre>
+  </section>
+  <section id="section_docs">
+    <p><em>What about browser support?</em></p>
+    <p>annyang plays nicely with all browsers, progressively enhancing browsers that support SpeechRecognition, while leaving users with older browsers unaffected.</p>
+  </section>
+  <section id="section_footer">
+    <h2>Ready to get started?</h2>
+    <p>Grab the latest version of <a href="https://github.com/TalAter/annyang">annyang.min.js</a>, drop it in your html, and start adding commands.</p>
+    <p>You can also visit annyang on <a href="https://github.com/TalAter/annyang">GitHub</a>, and read the full <a href="https://github.com/TalAter/annyang/blob/master/docs/README.md">API documentation</a> or <a href="https://github.com/TalAter/annyang/blob/master/docs/FAQ.md">FAQ</a>.</p>
+    <div class="social">
+      <iframe src="vendor/html/github-btn.html?user=TalAter&repo=annyang&type=watch&count=true&size=large" allowtransparency="true" frameborder="0" scrolling="0" width="152px" height="30px"></iframe>
+      <span style="margin-left: 25px;"><a href="https://twitter.com/share" class="twitter-share-button" data-url="http://www.annyangjs.com" data-counturl="https://www.talater.com/annyang" data-via="TalAter" data-size="large" data-lang="en" data-count="horizontal" data-text="annyang! A javascript library that lets your users talk to your site, giving it voice commands">Tweet</a></span>
+      <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+      <iframe src="https://www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.talater.com%2Fannyang%2F&width=134&layout=button_count&action=like&show_faces=false&share=true&height=46&appId=263514670331109" width="134" height="25" style="border:none;overflow:hidden;margin-left: 30px" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+    </div>
+    <div class="copyright">
+      <p>&copy; 2016 Tal Ater. All rights reserved. The annyang source code is free to use under the <a href="https://raw.github.com/TalAter/annyang/master/LICENSE">MIT license</a>.</p>
+      <p>Tal Ater retains creative control, spin-off rights and theme park approval for Mr. Banana Grabber, Baby Banana Grabber, and any other Banana Grabber family character that might emanate there from.</p>
+    </div>
+  </section>
+  <div id="unsupported" class="hidden">
+    <h4>It looks like your browser doesn't support speech recognition.</h4>
+    <p>annyang plays nicely with all browsers, progressively enhancing modern browsers that support the SpeechRecognition standard, while leaving users with older browsers unaffected.</p>
+    <p>Please visit <a href="http://www.annyangjs.com/">http://www.annyangjs.com/</a> in a desktop browser like Chrome.</p>
+  </div>
+  <script>
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-24775009-1']);
+    _gaq.push(['_trackPageview']);
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+  <script src="./vendor/js/highlight.pack.js"></script>
+  <script>
+    hljs.initHighlightingOnLoad();
+  </script>
 </body>
 </html>
