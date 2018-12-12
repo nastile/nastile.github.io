@@ -1,47 +1,23 @@
-﻿<!DOCTYPE html>
+﻿<!DOCTYPE HTML>
 <html>
+  <head> </head>
+  <body id="main">
 
-<head>
-    <title>Alex Zagorulko</title>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
-    <meta name="author" content="Александр Загорулько">
-    <link rel="stylesheet" href="css/style.css">
-</head>
-<script src="annyang.min.js"></script>
- 
-<script>
-if (annyang) {
-var commands = { 
-"Чат": openChat, 
-// Все что после звездочки будет передано в параметр функции search 
-"Найти *query": search, 
-// Двоеточие объявляет однословную переменную, которая будет передана в параметр функции day 
-"Сегодня :n день недели": day 
-}; 
-function openChat(){
-// Функция открытия чата
-};
-function search(query){ 
-// query - поисковый запрос, который пользователь назвал 
-};
-function day(num){ 
-// Функция обработки команды "День недели"
-};
- 
-annyang.addCommands(commands);
-annyang.setLanguage('ru'); // Устанавливаем русский язык 
-annyang.start();
-}
-</script>
-<body>
-    <header>
-        <div class="logo">
-            <a href="https://vk.com/lucifer_sanya"> <img src="photos/logo.png" alt="Alex Zagorulko"></a>
-        </div>
-	
-</header>
-            
-</body>
+произнесите "красный"
+<input id="speech" type="text" speech="speech" x-webkit-speech="x-webkit-speech" onspeechchange="processspeech();" onwebkitspeechchange="processspeech();" />
 
+
+   <script type="text/javascript">
+    function processspeech()
+    {
+      var speechInput=document.getElementById("speech").value;
+      switch ( speechInput){
+        case "красный":
+          alert("вы выбрали крсный цвет");	
+        break;      
+      }
+    }
+   </script>
+    
+  </body>
 </html>
