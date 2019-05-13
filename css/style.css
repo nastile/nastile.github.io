@@ -7,11 +7,11 @@
 body {
     color: white;
     background-color: black;
-    background-image: url(../photos/fon.jpg);
+    background-image: url(../photos/fon1.jpg);
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: 100%;
-    background-position: 0px 64px;
+    background-position: 0px -200px 64px;
 }
 
 header {
@@ -53,3 +53,6 @@ footer {
 footer small a {
     color: #eff;
 }
+ul {padding-left: 40px; margin-top: 1em; margin-bottom: 1em; font-size: 20px;}
+h1 {font-size:35px}
+p {font-size:25px}
