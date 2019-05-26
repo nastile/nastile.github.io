@@ -32,8 +32,6 @@
               if ((str.indexOf('створив')>=0) || (str.indexOf('створив')>=0)) div_show("створив")
               if ((str.indexOf('хто')>=0) || (str.indexOf('хто')>=0)) div_show("хто")
               if ((str.indexOf('хто створив')>=0) || (str.indexOf('хто створив')>=0)) div_show("хто створив")
-              if ((str.indexOf('Yandex')>=0) || (str.indexOf('Yandex')>=0)) div_show("Yandex")
-              if ((str.indexOf('Яндекс')>=0) || (str.indexOf('Яндекс')>=0)) div_show("Яндекс")
               if ((str.indexOf('zk fm')>=0) || (str.indexOf('zk fm')>=0)) div_show("zk fm")
               if ((str.indexOf('zk')>=0) || (str.indexOf('zk')>=0)) div_show("zk")
               if ((str.indexOf('ззк')>=0) || (str.indexOf('зк')>=0)) div_show("ззк")
@@ -48,6 +46,7 @@
               if ((str.indexOf('сефон')>=0) || (str.indexOf('сефон')>=0)) div_show("сефон")
               if ((str.indexOf('сифон me')>=0) || (str.indexOf('сифон me')>=0)) div_show("сифон me")
               if ((str.indexOf('сефон me')>=0) || (str.indexOf('сефон me')>=0)) div_show("сефон me")
+               if ((str.indexOf('музика')>=0) || (str.indexOf('музика')>=0)) div_show("музика")
               
       }
           
@@ -134,12 +133,6 @@
                   case "хто створив": 
                  location.href ="aboutme.html"
                 break;
-                   case "Yandex": 
-                 location.href ="https://yandex.ua/"
-                break;
-                   case "Яндекс": 
-                 location.href ="https://yandex.ua/"
-                break;
                    case "zk fm": 
                  location.href ="https://z1.fm/"
                 break;
@@ -181,6 +174,9 @@
                 break;
                    case "сефон": 
                  location.href ="https://sefon.me/"
+                break;
+                   case "популярна": 
+                 alert("Бабек Мамедрзаев-Принцеса")
                 break;
 
                   
